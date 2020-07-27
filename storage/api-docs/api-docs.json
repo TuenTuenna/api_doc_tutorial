@@ -1,0 +1,310 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api 연습",
+        "description": "api 문서 만들기 튜토리얼",
+        "contact": {
+            "email": "dev_jeongdaeri@email.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.6"
+    },
+    "servers": [
+        {
+            "url": "http://api_practice.test/api/v1",
+            "description": "테스트 서버"
+        },
+        {
+            "url": "http://api_practice.real/api/v1",
+            "description": "실서버"
+        }
+    ],
+    "paths": {
+        "/blogs": {
+            "get": {
+                "tags": [
+                    "Blogs"
+                ],
+                "summary": "모든 블로그 목록 가져오기",
+                "description": "모든 블로그 목록을 가져온다.",
+                "operationId": "getBlogsList",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Blogs"
+                ],
+                "summary": "블로그 추가하기",
+                "description": "추가된 블로그를 가져온다",
+                "operationId": "storeBlog",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BlogRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Blog"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/blogs/{id}": {
+            "get": {
+                "tags": [
+                    "Blogs"
+                ],
+                "summary": "해당 블로그를 가져온다.",
+                "description": "해당 블로그를 반환한다.",
+                "operationId": "getBlogById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Blog id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Blog"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Blogs"
+                ],
+                "summary": "기존 블로그를 수정한다.",
+                "description": "기존 블로그를 수정하고 수정된 블로그를 반환한다.",
+                "operationId": "updateBlog",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Blog id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/BlogRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Blogs"
+                ],
+                "summary": "블로그 아이템 삭제",
+                "description": "해당 블로그 아이템을 삭제하고 아무것도 반환하지 않는다.",
+                "operationId": "deleteBlog",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Blog id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "resource not found"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Blog": {
+                "title": "Blog model",
+                "description": "Blog model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "Title of a blog",
+                        "type": "string",
+                        "example": "A nice blog"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "Description of the new blog",
+                        "type": "string",
+                        "example": "This is new blog's description"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "deleted_at": {
+                        "title": "Deleted at",
+                        "description": "Deleted at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Blog"
+                }
+            },
+            "BlogRequest": {
+                "title": "Blog request",
+                "description": "Blog request body data",
+                "required": [
+                    "title",
+                    "content"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "Title of the new blog",
+                        "type": "string",
+                        "example": "A nice blog"
+                    },
+                    "content": {
+                        "title": "content",
+                        "description": "Content of the new blog",
+                        "type": "string",
+                        "example": "This is new blog's description"
+                    }
+                },
+                "type": "object"
+            },
+            "BlogResource": {
+                "title": "BlogResource",
+                "description": "Blog resource",
+                "properties": {
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Blog"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "BlogResource"
+                }
+            }
+        }
+    }
+}
